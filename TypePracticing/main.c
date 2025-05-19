@@ -20,11 +20,13 @@
 #define WINDOWS_WIDTH 96
 #define WINDOWS_HEIGHT 30
 
+
 void gotoxy(short x, short y);
 void SetFixedConsoleSize(short width, short height);
 void DisableConsoleResize();
 unsigned char mode_selection_main();
 drawUI_main();
+
 
 typedef struct mode{
     unsigned char mode;
@@ -33,7 +35,7 @@ typedef struct mode{
     short default_y;
 }Mode;
 
-unsigned char mode = 0;/**
+unsigned char mode = 99;/**
 모드 설정.
 0=메인화면. 나머지 번호는 각 번호에 맞춤
 */
@@ -50,6 +52,7 @@ void main(void) {
     Mode Config = { 6,"환경설정", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
     Mode Credit = { 7,"크레딧", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
     Mode Quit = { 8,"종료", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
+    //아직안씀, 쓸수도있고 안쓸수도있고
 
     while (mode!=8) {
         switch (mode) {
@@ -61,6 +64,7 @@ void main(void) {
             system("pause");
             system("cls");
             break;
+            
         case 1:
         case 2:
         case 3:
@@ -69,6 +73,8 @@ void main(void) {
         case 6:
         case 7:mode = 0;
         case 8:break;
+        case 99:
+            key_checker();
         default:
             printf("메뉴를 불러오는 데 실패하였습니다! 게임을 종료합니다.\n\n");
             system("pause");

@@ -6,3 +6,5 @@
 #include <time.h>
 #include <Windows.h>
 
+void key_checker();
+
