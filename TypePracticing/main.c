@@ -11,50 +11,83 @@
 7. 크레딧
 8. 종료
 
-
+51. 과제요구사항 게임
+52. 산성비?
 
 	*/
 
 
 #include "std.h"
-#define WINDOWS_WIDTH 96
-#define WINDOWS_HEIGHT 30
 
+#define MENU 7//메뉴의 수. 마지막 번호는 무조건 종료
 
-void gotoxy(short x, short y);
-void SetFixedConsoleSize(short width, short height);
-void DisableConsoleResize();
 unsigned char mode_selection_main();
 drawUI_main();
 
-
-typedef struct mode{
-    unsigned char mode;
-    char name[14];
-    short default_x;
-    short default_y;
-}Mode;
-
-unsigned char mode = 99;/**
+unsigned char mode = 98;/**
 모드 설정.
 0=메인화면. 나머지 번호는 각 번호에 맞춤
 */
 
-void main(void) {
+
+int main(void) {
     SetFixedConsoleSize(WINDOWS_WIDTH, WINDOWS_HEIGHT);
     DisableConsoleResize();
-    
-    Mode Key_prac = { 1,"자리연습", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Word_prac = { 2,"낱말연습", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Sentence_prac = { 3,"짧은글연습", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Essay_prac = { 4,"긴글연습", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Play = { 5,"놀이", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Config = { 6,"환경설정", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Credit = { 7,"크레딧", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    Mode Quit = { 8,"종료", WINDOWS_WIDTH / 2, WINDOWS_HEIGHT / 2 };
-    //아직안씀, 쓸수도있고 안쓸수도있고
 
-    while (mode!=8) {
+    Text words;
+    words.reference = "words.txt";
+    words.length = count_lines_of_file(words.reference);
+    if (words.length == 0) {
+        perror("파일이 비어있음.");
+        return 1;
+    }
+    else if (words.length == -1) {
+        perror("파일이 존재하지 않음.");
+        return 1;
+    }
+
+    Text sentences;
+    sentences.reference = "sentences.txt";
+    sentences.length = count_lines_of_file(sentences.reference);
+    if (sentences.length == 0) {
+        perror("파일이 비어있음.");
+        return 1;
+    }
+    else if (sentences.length == -1) {
+        perror("파일이 존재하지 않음.");
+        return 1;
+    }
+    
+    words.arr = (char**)malloc(sizeof(char*) * words.length);
+    sentences.arr = (char**)malloc(sizeof(char*) * sentences.length);
+    if (!words.arr || !sentences.arr) {
+        perror("메모리 할당 실패");
+        return 1;
+    }
+
+    FILE* fp = fopen(words.reference, "r");
+    if (!fp) {
+        perror("메모리 할당 실패");
+        free(words.arr);
+        free(sentences.arr);
+        return 1;
+    }
+    txt_to_arr(&words, &fp);
+    fclose(fp);
+
+    fp = fopen(sentences.reference, "r");
+    if (!fp) {
+        perror("메모리 할당 실패");
+        free(words.arr);
+        free(sentences.arr);
+        return 1;
+    }
+    txt_to_arr(&sentences, &fp);
+    fclose(fp);
+
+
+
+    while (mode!=MENU) {
         switch (mode) {
         case 0:
             drawUI_main();
@@ -70,54 +103,28 @@ void main(void) {
         case 3:
         case 4:
         case 5:
-        case 6:
-        case 7:mode = 0;
-        case 8:break;
+        case 6:mode = 0; break;
+        case 7:
+            break;
+        case 98:
+            txt_read_checker(&words, &sentences);
+            system("pause");
+            mode = 0;
+            break;
         case 99:
-            key_checker();
+            //key_checker();//키 입력 아스키코드 확인용, 입력기능 구현 확인용
         default:
             printf("메뉴를 불러오는 데 실패하였습니다! 게임을 종료합니다.\n\n");
             system("pause");
-            goto end;
+            mode = 7;
+            break;
         }
         
     }
 
 
-end:;
-}
 
-
-
-void gotoxy(short x, short y) {
-    COORD pos = { x, y };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-void SetFixedConsoleSize(short width, short height) {
-    HWND console = GetConsoleWindow();
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    // 1단계: 커서 숨기기 (선택 사항)
-    //CONSOLE_CURSOR_INFO cursorInfo;
-    //GetConsoleCursorInfo(hOut, &cursorInfo);
-    //cursorInfo.bVisible = FALSE;
-    //SetConsoleCursorInfo(hOut, &cursorInfo);
-
-    // 2단계: 콘솔 창 크기 제한을 위해 화면 버퍼 크기 조정
-    COORD bufferSize = { width, height };
-    SetConsoleScreenBufferSize(hOut, bufferSize);
-
-    // 3단계: 콘솔 윈도우 크기 조정
-    SMALL_RECT windowSize = { 0, 0, width - 1, height - 1 };
-    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
-}
-void DisableConsoleResize() {
-    HWND hwnd = GetConsoleWindow();
-    // 크기 조절 불가 및 최대화 버튼 제거
-    LONG style = GetWindowLong(hwnd, GWL_STYLE);
-    style &= ~(WS_MAXIMIZEBOX | WS_THICKFRAME); // 최대화버튼, 크기조절 프레임 제거
-    SetWindowLong(hwnd, GWL_STYLE, style);
+    return 0;
 }
 
 drawUI_main() {
@@ -127,10 +134,10 @@ drawUI_main() {
     
     y += 5;
     
-    char menu[8][14] = {
-        "1. 단어연습", "2. 낱말연습", "3. 짧은글연습", "4. 긴글연습", "5. 놀이", "6. 환경설정", "7. 크레딧", "8. 종료"
+    char * menu[MENU] = {
+        "1. 단어연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
     };
-    for(unsigned char i=0;i<8;i++,y+=2){
+    for(unsigned char i=0;i<MENU;i++,y+=2){
         gotoxy(x, y);
         printf("%s",menu[i]);
         x = WINDOWS_WIDTH / 2 - 7;
@@ -164,8 +171,8 @@ unsigned char mode_selection_main() {
                 else { n = 1; }
                 break;
             case 80://아래
-                if (n < 8) { n++; y += 2; }
-                else { n = 8; }
+                if (n < MENU) { n++; y += 2; }
+                else { n = MENU; }
             }
         default:;
         }

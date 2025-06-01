@@ -21,6 +21,12 @@
     <ClCompile Include="key_checker.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="txt_read_checker.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main_functions.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="std.h">

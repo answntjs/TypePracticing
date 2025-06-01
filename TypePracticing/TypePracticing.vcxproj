@@ -127,8 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="key_checker.c" />
+    <ClCompile Include="key_checker.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.c" />
+    <ClCompile Include="main_functions.c" />
+    <ClCompile Include="txt_read_checker.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="std.h" />

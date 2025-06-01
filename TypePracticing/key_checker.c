@@ -13,7 +13,8 @@ void key_checker() {
 			ch1 = _getch();
 			if (ch1 == 0 || ch1 == 224) {//function keys
 				ch2 = _getch();
-				printf("%d %d", ch2, ch1);
+				
+				printf("%d %d\n", ch2, ch1);
 			}
 			else if (ch1 == 8)printf("\b \b");//backspace
 			else if (ch1 == 13)printf("\n");//enter
@@ -23,5 +24,3 @@ void key_checker() {
 
 	}
 }
-//
-// errlog: shift, ctrl 등이랑 같이 키를 누르면 예외 발생
