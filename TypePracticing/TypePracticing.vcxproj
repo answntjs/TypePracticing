@@ -132,6 +132,7 @@
     </ClCompile>
     <ClCompile Include="main.c" />
     <ClCompile Include="main_functions.c" />
+    <ClCompile Include="sentence_prac.c" />
     <ClCompile Include="txt_read_checker.c" />
   </ItemGroup>
   <ItemGroup>

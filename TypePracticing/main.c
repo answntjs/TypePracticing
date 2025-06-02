@@ -21,10 +21,10 @@
 
 #define MENU 7//메뉴의 수. 마지막 번호는 무조건 종료
 
-unsigned char mode_selection_main();
-drawUI_main();
+unsigned char mode_selection_main(char*(*info)[MENU]);
+void drawUI_main(char*(*menu)[MENU]);
 
-unsigned char mode = 98;/**
+unsigned char mode = 0;/**
 모드 설정.
 0=메인화면. 나머지 번호는 각 번호에 맞춤
 */
@@ -34,6 +34,7 @@ int main(void) {
     SetFixedConsoleSize(WINDOWS_WIDTH, WINDOWS_HEIGHT);
     DisableConsoleResize();
 
+    //dynamic 메모리 할당, 사실 잘은 몰라도됨
     Text words;
     words.reference = "words.txt";
     words.length = count_lines_of_file(words.reference);
@@ -85,13 +86,24 @@ int main(void) {
     txt_to_arr(&sentences, &fp);
     fclose(fp);
 
-
+    char* menu[MENU] = {
+        "1. 자리연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
+    };
+    char* menu_info[MENU] = {
+        "글자판의 위치를 익히는 곳입니다.\n숫자, 알파벳, 특수문자 등 여러 문자들을 입력합니다.",
+        "낱말을 입력하며 글쓰기를 연습합니다.\n낱말을 입력하고 Enter 혹은 Space Bar 글쇠를 눌러 다음 낱말을 입력합니다.",
+        "짧은 글 30문을 입력하며 타자 실력을 늘립니다.\n빠르게 입력하는 것도 중요하지만,\n정확하게 입력하는 것이 더욱 중요합니다.",
+        "게임을 통해 타자를 연습할 수 있습니다.",
+        "설정은 제작중.\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
+        "Motivated by Hancom\nDeveloped in Konkuk University",
+        "TypePracticing을 끝냅니다.",
+    };
 
     while (mode!=MENU) {
         switch (mode) {
         case 0:
-            drawUI_main();
-            mode = mode_selection_main();
+            drawUI_main(&menu);
+            mode = mode_selection_main(&menu_info);
             system("cls");
             printf("%hhu\n",mode);
             system("pause");
@@ -101,18 +113,22 @@ int main(void) {
         case 1:
         case 2:
         case 3:
+            sentence_prac(&sentences);
+            mode = 0;
+            break;
         case 4:
         case 5:
         case 6:mode = 0; break;
         case 7:
             break;
         case 98:
+            //텍스트 읽기 테스트
             txt_read_checker(&words, &sentences);
             system("pause");
             mode = 0;
             break;
         case 99:
-            //key_checker();//키 입력 아스키코드 확인용, 입력기능 구현 확인용
+            key_checker();//키 입력 아스키코드 확인용, 입력기능 구현 확인용
         default:
             printf("메뉴를 불러오는 데 실패하였습니다! 게임을 종료합니다.\n\n");
             system("pause");
@@ -122,25 +138,23 @@ int main(void) {
         
     }
 
-
-
+    //반드시 해제
+    free(words.arr);
+    free(sentences.arr);
     return 0;
 }
 
-drawUI_main() {
-    short x= WINDOWS_WIDTH / 2 - 7, y= WINDOWS_HEIGHT / 5;
+void drawUI_main(char*(* menu)[MENU]) {
+    short x= WINDOWS_WIDTH / 2 - 7, y= WINDOWS_HEIGHT / 7;
     gotoxy(x,y);
     printf("TypePracticing");
     
     y += 5;
     
-    char * menu[MENU] = {
-        "1. 단어연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
-    };
     for(unsigned char i=0;i<MENU;i++,y+=2){
+        x = WINDOWS_WIDTH / 2 - 28;
         gotoxy(x, y);
-        printf("%s",menu[i]);
-        x = WINDOWS_WIDTH / 2 - 7;
+        printf("%s",(*menu)[i]);
     }
 
     printf("\n");y = WINDOWS_HEIGHT;
@@ -148,13 +162,14 @@ drawUI_main() {
     printf("v 0.0.1");
 }
 
-unsigned char mode_selection_main() {
-    short x = WINDOWS_WIDTH / 2 - 7;
-    short y = WINDOWS_HEIGHT / 5 + 5;
+unsigned char mode_selection_main(char* (*info)[MENU]) {
+    short x = WINDOWS_WIDTH / 2 - 28;
+    short y = WINDOWS_HEIGHT / 7 + 5;
     
     unsigned char n = 1;
     unsigned char ch = 1;
     while (ch != '\n' && ch != ' ') {
+        print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
         gotoxy(x, y);
         ch = getch();
         switch (ch) {
@@ -176,5 +191,6 @@ unsigned char mode_selection_main() {
             }
         default:;
         }
+        
     }
 }

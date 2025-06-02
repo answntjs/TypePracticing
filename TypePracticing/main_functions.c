@@ -31,7 +31,7 @@ void DisableConsoleResize() {
     SetWindowLong(hwnd, GWL_STYLE, style);
 }
 
-void loading_bar(short start_x, short start_y, int length, double numerator, double denominator) {
+void bar(short start_x, short start_y, int length, double numerator, double denominator) {
     gotoxy(start_x, start_y);
     int i;
     for (i = 0; i < length * numerator / denominator; i++) printf("#");
@@ -65,4 +65,26 @@ void txt_to_arr(Text* text, FILE** fp) {
         }
         strcpy((*text).arr[i], buffer);
     }
+}
+
+
+void print_in_rectangle(short coord_x, short coord_y, short size_x, short size_y, char* str) {
+    int i, j, l, k;
+    k = 0, l = 0;
+    for (i = 0; i < size_y; i++) {
+        gotoxy(coord_x, coord_y + i);
+        for (j = 0; j < size_x; j++) {
+            if (str[k] == '\0') l = 1;
+            if (str[k] == '\n') l = 1, k++;
+            if (l)printf(" ");
+            else {
+                printf("%c", str[k]);
+                k++;
+            }
+            
+        }
+        l = 0;
+    }
+    gotoxy(coord_x, coord_y);
+    return;
 }
