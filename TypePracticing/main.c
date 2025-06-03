@@ -1,35 +1,35 @@
 /*
 
-¸®¼Ò½º ·Îµù...(ÅØ½ºÆ®ÆÄÀÏ, »ç¿ëÀÚ Á¤º¸ ÀÐ±â)
-¸ÞÀÎÈ­¸é
-1. ÀÚ¸®¿¬½À - ´ÜÀÏ¹®ÀÚ; Key Prac
-2. ³¹¸»¿¬½À - ´Ü¾î¿¬½À; Word Prac
-3. ÂªÀº±Û¿¬½À - ´Ü¹®Àå ¿¬½À; Sentence Prac
-4. ±ä±Û¿¬½À - ; Essay Prac
-5. ³îÀÌ
-6. È¯°æ¼³Á¤
-7. Å©·¹µ÷
-8. Á¾·á
+ë¦¬ì†ŒìŠ¤ ë¡œë”©...(í…ìŠ¤íŠ¸íŒŒì¼, ì‚¬ìš©ìž ì •ë³´ ì½ê¸°)
+ë©”ì¸í™”ë©´
+1. ìžë¦¬ì—°ìŠµ - ë‹¨ì¼ë¬¸ìž; Key Prac
+2. ë‚±ë§ì—°ìŠµ - ë‹¨ì–´ì—°ìŠµ; Word Prac
+3. ì§§ì€ê¸€ì—°ìŠµ - ë‹¨ë¬¸ìž¥ ì—°ìŠµ; Sentence Prac
+4. ê¸´ê¸€ì—°ìŠµ - ; Essay Prac
+5. ë†€ì´
+6. í™˜ê²½ì„¤ì •
+7. í¬ë ˆë”§
+8. ì¢…ë£Œ
 
-51. °úÁ¦¿ä±¸»çÇ× °ÔÀÓ
-52. »ê¼ººñ?
+51. ê³¼ì œìš”êµ¬ì‚¬í•­ ê²Œìž„
+52. ì‚°ì„±ë¹„?
 
 	*/
 
 
 #include "std.h"
 
-#define MENU 7//¸Þ´ºÀÇ ¼ö. ¸¶Áö¸· ¹øÈ£´Â ¹«Á¶°Ç Á¾·á
+#define MENU 7//ë©”ë‰´ì˜ ìˆ˜. ë§ˆì§€ë§‰ ë²ˆí˜¸ëŠ” ë¬´ì¡°ê±´ ì¢…ë£Œ
 
-//Ä¿¼­¸¦ ¿òÁ÷¿© ¸ðµå¸¦ ¼±ÅÃÇÏ´Â ÇÔ¼ö. ¸ðµå ¼ýÀÚ¸¦ ¹ÝÈ¯ÇÔ.
+//ì»¤ì„œë¥¼ ì›€ì§ì—¬ ëª¨ë“œë¥¼ ì„ íƒí•˜ëŠ” í•¨ìˆ˜. ëª¨ë“œ ìˆ«ìžë¥¼ ë°˜í™˜í•¨.
 unsigned char mode_selection_main(char*(*info)[MENU]);
 
-//¸ÞÀÎÈ­¸é ui¸¦ ±×¸²
+//ë©”ì¸í™”ë©´ uië¥¼ ê·¸ë¦¼
 void drawUI_main(char*(*menu)[MENU]);
 
 /**
-¸ðµå ¼³Á¤.
-0=¸ÞÀÎÈ­¸é. ³ª¸ÓÁö ¹øÈ£´Â °¢ ¹øÈ£¿¡ ¸ÂÃã
+ëª¨ë“œ ì„¤ì •.
+0=ë©”ì¸í™”ë©´. ë‚˜ë¨¸ì§€ ë²ˆí˜¸ëŠ” ê° ë²ˆí˜¸ì— ë§žì¶¤
 */
 
 
@@ -38,16 +38,18 @@ int main(void) {
     DisableConsoleResize();
     srand(time(NULL));
 
-    //dynamic ¸Þ¸ð¸® ÇÒ´ç, »ç½Ç ÀßÀº ¸ô¶óµµµÊ
+    //dynamic ë©”ëª¨ë¦¬ í• ë‹¹, ì‚¬ì‹¤ ìž˜ì€ ëª°ë¼ë„ë¨
     Text words;
     words.reference = "words.txt";
     words.length = count_lines_of_file(words.reference);
     if (words.length == 0) {
-        perror("ÆÄÀÏÀÌ ºñ¾îÀÖÀ½.");
+        perror("íŒŒì¼ì´ ë¹„ì–´ìžˆìŒ.");
+        system("pause");
         return 1;
     }
     else if (words.length == -1) {
-        perror("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ½.");
+        perror("íŒŒì¼ì´ ì¡´ìž¬í•˜ì§€ ì•ŠìŒ.");
+        system("pause");
         return 1;
     }
 
@@ -55,24 +57,28 @@ int main(void) {
     sentences.reference = "sentences.txt";
     sentences.length = count_lines_of_file(sentences.reference);
     if (sentences.length == 0) {
-        perror("ÆÄÀÏÀÌ ºñ¾îÀÖÀ½.");
+        perror("íŒŒì¼ì´ ë¹„ì–´ìžˆìŒ.");
+        system("pause");
         return 1;
     }
     else if (sentences.length == -1) {
-        perror("ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ½.");
+        perror("íŒŒì¼ì´ ì¡´ìž¬í•˜ì§€ ì•ŠìŒ.");
+        system("pause");
         return 1;
     }
     
     words.arr = (char**)malloc(sizeof(char*) * words.length);
     sentences.arr = (char**)malloc(sizeof(char*) * sentences.length);
     if (!words.arr || !sentences.arr) {
-        perror("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ");
+        perror("ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨");
+        system("pause");
         return 1;
     }
 
     FILE* fp = fopen(words.reference, "r");
     if (!fp) {
-        perror("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ");
+        perror("ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨");
+        system("pause");
         free(words.arr);
         free(sentences.arr);
         return 1;
@@ -82,7 +88,8 @@ int main(void) {
 
     fp = fopen(sentences.reference, "r");
     if (!fp) {
-        perror("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ");
+        perror("ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨");
+        system("pause");
         free(words.arr);
         free(sentences.arr);
         return 1;
@@ -90,19 +97,19 @@ int main(void) {
     txt_to_arr(&sentences, &fp);
     fclose(fp);
 
-    unsigned char mode =3;
+    unsigned char mode =0;
 
     char* menu[MENU] = {
-        "1. ÀÚ¸®¿¬½À", "2. ³¹¸»¿¬½À", "3. ÂªÀº±Û¿¬½À", "4. ³îÀÌ", "5. ¼³Á¤", "6. Å©·¹µ÷", "7. Á¾·á"
+        "1. ìžë¦¬ì—°ìŠµ", "2. ë‚±ë§ì—°ìŠµ", "3. ì§§ì€ê¸€ì—°ìŠµ", "4. ë†€ì´", "5. ì„¤ì •", "6. í¬ë ˆë”§", "7. ì¢…ë£Œ"
     };
     char* menu_info[MENU] = {
-        "±ÛÀÚÆÇÀÇ À§Ä¡¸¦ ÀÍÈ÷´Â °÷ÀÔ´Ï´Ù.\n\n¼ýÀÚ, ¾ËÆÄºª, Æ¯¼ö¹®ÀÚ µî\n¿©·¯ ¹®ÀÚµéÀÇ À§Ä¡¸¦ ¾Ë ¼ö ÀÖ½À´Ï´Ù.",
-        "³¹¸»À» ÀÔ·ÂÇÏ¸ç ±Û¾²±â¸¦ ¿¬½ÀÇÕ´Ï´Ù.\n\n³¹¸»À» ÀÔ·ÂÇÏ°í Enter È¤Àº Space Bar\n±Û¼è¸¦ ´­·¯ ´ÙÀ½ ³¹¸»À» ÀÔ·ÂÇÕ´Ï´Ù.",
-        "ÂªÀº ±Û 10¹®À¸·Î ±Û¾²±â¸¦ ¿¬½ÀÇÕ´Ï´Ù.\n\nºü¸£°Ô ÀÔ·ÂÇÏ´Â °Íµµ Áß¿äÇÏÁö¸¸,\nÁ¤È®ÇÏ°Ô ÀÔ·ÂÇÏ´Â °ÍÀÌ ´õ¿í Áß¿äÇÕ´Ï´Ù.",
-        "°ÔÀÓÀ» ÅëÇØ Å¸ÀÚ¸¦ ¿¬½ÀÇÒ ¼ö ÀÖ½À´Ï´Ù.",
-        "¼³Á¤Àº Á¦ÀÛÁß.\n\nÀ¯Àú µ¥ÀÌÅÍ È¤Àº Å¸ÀÚ µ¥ÀÌÅÍ Åë°è,\n°ÔÀÓ ¼³Á¤ µî ¸¸µé¼öµµ ÀÖ°í ¾È¸¸µé ¼öµµ ÀÖ°í",
+        "ê¸€ìžíŒì˜ ìœ„ì¹˜ë¥¼ ìµížˆëŠ” ê³³ìž…ë‹ˆë‹¤.\n\nìˆ«ìž, ì•ŒíŒŒë²³, íŠ¹ìˆ˜ë¬¸ìž ë“±\nì—¬ëŸ¬ ë¬¸ìžë“¤ì˜ ìœ„ì¹˜ë¥¼ ì•Œ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.",
+        "ë‚±ë§ì„ ìž…ë ¥í•˜ë©° ê¸€ì“°ê¸°ë¥¼ ì—°ìŠµí•©ë‹ˆë‹¤.\n\në‚±ë§ì„ ìž…ë ¥í•˜ê³  Enter í˜¹ì€ Space Bar\nê¸€ì‡ ë¥¼ ëˆŒëŸ¬ ë‹¤ìŒ ë‚±ë§ì„ ìž…ë ¥í•©ë‹ˆë‹¤.",
+        "ì§§ì€ ê¸€ 10ë¬¸ìœ¼ë¡œ ê¸€ì“°ê¸°ë¥¼ ì—°ìŠµí•©ë‹ˆë‹¤.\n\në¹ ë¥´ê²Œ ìž…ë ¥í•˜ëŠ” ê²ƒë„ ì¤‘ìš”í•˜ì§€ë§Œ,\nì •í™•í•˜ê²Œ ìž…ë ¥í•˜ëŠ” ê²ƒì´ ë”ìš± ì¤‘ìš”í•©ë‹ˆë‹¤.",
+        "ê²Œìž„ì„ í†µí•´ íƒ€ìžë¥¼ ì—°ìŠµí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.",
+        "ì„¤ì •ì€ ì œìž‘ì¤‘.\n\nìœ ì € ë°ì´í„° í˜¹ì€ íƒ€ìž ë°ì´í„° í†µê³„,\nê²Œìž„ ì„¤ì • ë“± ë§Œë“¤ìˆ˜ë„ ìžˆê³  ì•ˆë§Œë“¤ ìˆ˜ë„ ìžˆê³ ",
         "Motivated by Hancom\n\nDeveloped in Konkuk University",
-        "TypePracticingÀ» ³¡³À´Ï´Ù.",
+        "TypePracticingì„ ëëƒ…ë‹ˆë‹¤.",
     };
 
     while (mode!=MENU) {
@@ -111,9 +118,9 @@ int main(void) {
             system("cls");
             drawUI_main(&menu);
             mode = mode_selection_main(&menu_info);
-            system("cls");
-            printf("%hhu\n",mode);
-            system("pause");
+            //system("cls");
+            //printf("%hhu\n",mode);
+            //system("pause");
             break;
         case 1:
             mode = 0;
@@ -122,6 +129,7 @@ int main(void) {
             mode = 0;
             break;
         case 3:
+            system("cls");
             sentence_prac(&sentences);
             mode = 0;
             break;
@@ -135,15 +143,15 @@ int main(void) {
         case 7:
             break;
         case 98:
-            //ÅØ½ºÆ® ÀÐ±â Å×½ºÆ®
+            //í…ìŠ¤íŠ¸ ì½ê¸° í…ŒìŠ¤íŠ¸
             txt_read_checker(&words, &sentences);
             system("pause");
             mode = 0;
             break;
         case 99:
-            key_checker();//Å° ÀÔ·Â ¾Æ½ºÅ°ÄÚµå È®ÀÎ¿ë, ÀÔ·Â±â´É ±¸Çö È®ÀÎ¿ë
+            key_checker();//í‚¤ ìž…ë ¥ ì•„ìŠ¤í‚¤ì½”ë“œ í™•ì¸ìš©, ìž…ë ¥ê¸°ëŠ¥ êµ¬í˜„ í™•ì¸ìš©
         default:
-            printf("¸Þ´º¸¦ ºÒ·¯¿À´Â µ¥ ½ÇÆÐÇÏ¿´½À´Ï´Ù! °ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù.\n\n");
+            printf("ë©”ë‰´ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ë° ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤! ê²Œìž„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.\n\n");
             system("pause");
             mode = 7;
             break;
@@ -151,7 +159,7 @@ int main(void) {
         
     }
 
-    //¹Ýµå½Ã ÇØÁ¦
+    //ë°˜ë“œì‹œ í•´ì œ
     free(words.arr);
     free(sentences.arr);
     return 0;
@@ -181,8 +189,8 @@ unsigned char mode_selection_main(char* (*info)[MENU]) {
     
     unsigned char n = 1;
     unsigned char ch = 1;
+    print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
     while (ch != '\n' && ch != ' ') {
-        print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
         gotoxy(x, y);
         ch = getch();
         switch (ch) {
@@ -191,19 +199,24 @@ unsigned char mode_selection_main(char* (*info)[MENU]) {
         case ' ':
             return n;
             break;
-        case 224://È­»ìÇ¥
+        case 224://í™”ì‚´í‘œ
             ch = getch();
             switch (ch) {
-            case 72://À§
+            case 72://ìœ„
                 if (n > 1) { n--; y -= 2; }
-                else { n = 1; }
+                else { n = 1; continue; }
                 break;
-            case 80://¾Æ·¡
+            case 80://ì•„ëž˜
                 if (n < MENU) { n++; y += 2; }
-                else { n = MENU; }
+                else { n = MENU; continue; }
+                break;
+            default:
+                continue;
             }
-        default:;
+            break;
+        default:
+            continue;
         }
-        
+        print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
     }
 }
