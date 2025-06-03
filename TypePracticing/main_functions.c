@@ -31,8 +31,7 @@ void DisableConsoleResize() {
     SetWindowLong(hwnd, GWL_STYLE, style);
 }
 
-void bar(short start_x, short start_y, int length, double numerator, double denominator) {
-    gotoxy(start_x, start_y);
+void bar(int length, double numerator, double denominator) {
     int i;
     for (i = 0; i < length * numerator / denominator; i++) printf("#");
     for (i; i < length; i++) printf("-");
@@ -75,16 +74,23 @@ void print_in_rectangle(short coord_x, short coord_y, short size_x, short size_y
         gotoxy(coord_x, coord_y + i);
         for (j = 0; j < size_x; j++) {
             if (str[k] == '\0') l = 1;
-            if (str[k] == '\n') l = 1, k++;
+            if (str[k] == '\n') l++, k++;
             if (l)printf(" ");
             else {
                 printf("%c", str[k]);
                 k++;
             }
-            
         }
-        l = 0;
+        l--;
+        if (l < 1)l = 0;
     }
     gotoxy(coord_x, coord_y);
     return;
+}
+
+
+void get_random_int_arr(int(*arr)[], int size, int max, int min) {
+    for (int i = 0; i < size; i++) {
+        (*arr)[i] = rand() % (max - min + 1) + min;
+    }
 }

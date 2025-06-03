@@ -21,10 +21,13 @@
 
 #define MENU 7//메뉴의 수. 마지막 번호는 무조건 종료
 
+//커서를 움직여 모드를 선택하는 함수. 모드 숫자를 반환함.
 unsigned char mode_selection_main(char*(*info)[MENU]);
+
+//메인화면 ui를 그림
 void drawUI_main(char*(*menu)[MENU]);
 
-unsigned char mode = 0;/**
+/**
 모드 설정.
 0=메인화면. 나머지 번호는 각 번호에 맞춤
 */
@@ -33,6 +36,7 @@ unsigned char mode = 0;/**
 int main(void) {
     SetFixedConsoleSize(WINDOWS_WIDTH, WINDOWS_HEIGHT);
     DisableConsoleResize();
+    srand(time(NULL));
 
     //dynamic 메모리 할당, 사실 잘은 몰라도됨
     Text words;
@@ -86,38 +90,47 @@ int main(void) {
     txt_to_arr(&sentences, &fp);
     fclose(fp);
 
+    unsigned char mode =3;
+
     char* menu[MENU] = {
         "1. 자리연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
     };
     char* menu_info[MENU] = {
-        "글자판의 위치를 익히는 곳입니다.\n숫자, 알파벳, 특수문자 등 여러 문자들을 입력합니다.",
-        "낱말을 입력하며 글쓰기를 연습합니다.\n낱말을 입력하고 Enter 혹은 Space Bar 글쇠를 눌러 다음 낱말을 입력합니다.",
-        "짧은 글 30문을 입력하며 타자 실력을 늘립니다.\n빠르게 입력하는 것도 중요하지만,\n정확하게 입력하는 것이 더욱 중요합니다.",
+        "글자판의 위치를 익히는 곳입니다.\n\n숫자, 알파벳, 특수문자 등\n여러 문자들의 위치를 알 수 있습니다.",
+        "낱말을 입력하며 글쓰기를 연습합니다.\n\n낱말을 입력하고 Enter 혹은 Space Bar\n글쇠를 눌러 다음 낱말을 입력합니다.",
+        "짧은 글 10문으로 글쓰기를 연습합니다.\n\n빠르게 입력하는 것도 중요하지만,\n정확하게 입력하는 것이 더욱 중요합니다.",
         "게임을 통해 타자를 연습할 수 있습니다.",
-        "설정은 제작중.\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
-        "Motivated by Hancom\nDeveloped in Konkuk University",
+        "설정은 제작중.\n\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
+        "Motivated by Hancom\n\nDeveloped in Konkuk University",
         "TypePracticing을 끝냅니다.",
     };
 
     while (mode!=MENU) {
         switch (mode) {
         case 0:
+            system("cls");
             drawUI_main(&menu);
             mode = mode_selection_main(&menu_info);
             system("cls");
             printf("%hhu\n",mode);
             system("pause");
-            system("cls");
             break;
-            
         case 1:
+            mode = 0;
+            break;
         case 2:
+            mode = 0;
+            break;
         case 3:
             sentence_prac(&sentences);
             mode = 0;
             break;
         case 4:
+            mode = 0;
+            break;
         case 5:
+            mode = 0;
+            break;
         case 6:mode = 0; break;
         case 7:
             break;
