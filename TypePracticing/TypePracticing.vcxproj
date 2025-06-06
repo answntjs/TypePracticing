@@ -133,6 +133,7 @@
     <ClCompile Include="key_prac.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="main_functions.c" />
+    <ClCompile Include="play.c" />
     <ClCompile Include="sentence_prac.c" />
     <ClCompile Include="txt_read_checker.c" />
   </ItemGroup>

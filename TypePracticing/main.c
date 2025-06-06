@@ -136,6 +136,8 @@ int main(void) {
             mode = 0;
             break;
         case 4:
+            system("cls");
+            play_game(&words);
             mode = 0;
             break;
         case 5:
