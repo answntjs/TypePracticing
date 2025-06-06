@@ -40,6 +40,8 @@ void bar(int length, double numerator, double denominator) {
 int count_lines_of_file(const char* filename) {
     FILE* fp = fopen(filename, "r");
     if (!fp) {//파일이 존재하지 않거나 비어있는 경우
+        perror("파일 읽기 실패.");
+        system("pause");
         return -1;
     }
 
@@ -60,6 +62,7 @@ void txt_to_arr(Text* text, FILE** fp) {
         (*text).arr[i] = (char*)malloc(strlen(buffer) + 1);
         if (!(*text).arr[i]) {
             perror("메모리 할당 실패");
+            system("pause");
             break;
         }
         strcpy((*text).arr[i], buffer);

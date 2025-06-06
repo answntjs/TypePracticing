@@ -57,8 +57,12 @@ void txt_to_arr(Text*, FILE**);
 //특정 좌표로 이동하여 정해진 크기의 가상의 상자 안에 문자열을 출력하는 함수.
 void print_in_rectangle(short, short, short, short, char*);
 
+//자리연습
+void key_prac(void);
+
 //짧은글쓰기
 void sentence_prac(Text*);
 
 //정수 배열 arr의 element를 size 수만큼 난수로 채우는 함수
 void get_random_int_arr(int** arr, int size, int max, int min);
+

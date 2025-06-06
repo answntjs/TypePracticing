@@ -17,10 +17,10 @@ void sentence_prac(Text* sentences) {
 	Status Stat = { 0, 0, 0, 0, 0, 0, 1};
 	
 	
-	time_t start_time = time(NULL);
+	time_t start_time;
 	time_t now;
+	start_time = time(NULL);
 	for(num=0;num<SENTENCE_PRAC_NUM;num++){
-
 		//화면 지우기
 		print_in_rectangle(0, WINDOWS_HEIGHT / 8 + 4, WINDOWS_WIDTH, 13, "");
 
@@ -40,7 +40,7 @@ void sentence_prac(Text* sentences) {
 
 			//UI 갱신
 			gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 1);
-			printf("%-8s%2d/%-20d%-11s%4.0f/%-5s %-8s%3.0f/100", "진행도:", (num + 1), SENTENCE_PRAC_NUM, "분당 타수:", Stat.type_speed, "분", "정확도:", Stat.accuracy);
+			printf("%-8s%2d/%-20d%-11s%4.0f/%-9s %-8s%3.0f/100", "진행도:", (num + 1), SENTENCE_PRAC_NUM, "분당 타수:", Stat.type_speed, "분", "정확도:", Stat.accuracy);
 			gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 2);
 			bar(30, num, 10); printf(" "); bar(25, Stat.type_speed, Stat.type_peak); printf(" "); bar(20, Stat.accuracy, 100);
 
@@ -76,7 +76,10 @@ void sentence_prac(Text* sentences) {
 				printf("%c", ch1);
 				//if (!strncmp(buffer+position, sentences->arr[index[num]]+position, 1))Stat.correct++;
 				if (buffer[position] == sentences->arr[index[num]][position]) Stat.correct++;
-				else Stat.incorrect++;
+				else {
+					Stat.incorrect++;
+					Beep(255, 1);
+				}
 				position = (position < WINDOWS_WIDTH - 1) ? ++position : WINDOWS_WIDTH - 1;
 				Stat.type_count++;
 			}

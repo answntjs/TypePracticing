@@ -130,6 +130,7 @@
     <ClCompile Include="key_checker.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="key_prac.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="main_functions.c" />
     <ClCompile Include="sentence_prac.c" />

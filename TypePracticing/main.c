@@ -43,11 +43,13 @@ int main(void) {
     words.reference = "words.txt";
     words.length = count_lines_of_file(words.reference);
     if (words.length == 0) {
-        perror("파일이 비어있음.");
+        perror("파일이 비어있음");
+        system("pause");
         return 1;
     }
     else if (words.length == -1) {
-        perror("파일이 존재하지 않음.");
+        perror("파일이 존재하지 않음");
+        system("pause");
         return 1;
     }
 
@@ -55,11 +57,13 @@ int main(void) {
     sentences.reference = "sentences.txt";
     sentences.length = count_lines_of_file(sentences.reference);
     if (sentences.length == 0) {
-        perror("파일이 비어있음.");
+        perror("파일이 비어있음");
+        system("pause");
         return 1;
     }
     else if (sentences.length == -1) {
-        perror("파일이 존재하지 않음.");
+        perror("파일이 존재하지 않음");
+        system("pause");
         return 1;
     }
     
@@ -67,12 +71,14 @@ int main(void) {
     sentences.arr = (char**)malloc(sizeof(char*) * sentences.length);
     if (!words.arr || !sentences.arr) {
         perror("메모리 할당 실패");
+        system("pause");
         return 1;
     }
 
     FILE* fp = fopen(words.reference, "r");
     if (!fp) {
         perror("메모리 할당 실패");
+        system("pause");
         free(words.arr);
         free(sentences.arr);
         return 1;
@@ -83,6 +89,7 @@ int main(void) {
     fp = fopen(sentences.reference, "r");
     if (!fp) {
         perror("메모리 할당 실패");
+        system("pause");
         free(words.arr);
         free(sentences.arr);
         return 1;
@@ -90,7 +97,7 @@ int main(void) {
     txt_to_arr(&sentences, &fp);
     fclose(fp);
 
-    unsigned char mode =3;
+    unsigned char mode =0;
 
     char* menu[MENU] = {
         "1. 자리연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
@@ -111,17 +118,20 @@ int main(void) {
             system("cls");
             drawUI_main(&menu);
             mode = mode_selection_main(&menu_info);
-            system("cls");
-            printf("%hhu\n",mode);
-            system("pause");
+            //system("cls");
+            //printf("%hhu\n",mode);
+            //system("pause");
             break;
         case 1:
+            system("cls");
+            key_prac();
             mode = 0;
             break;
         case 2:
             mode = 0;
             break;
         case 3:
+            system("cls");
             sentence_prac(&sentences);
             mode = 0;
             break;
@@ -181,8 +191,8 @@ unsigned char mode_selection_main(char* (*info)[MENU]) {
     
     unsigned char n = 1;
     unsigned char ch = 1;
+    print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
     while (ch != '\n' && ch != ' ') {
-        print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
         gotoxy(x, y);
         ch = getch();
         switch (ch) {
@@ -196,14 +206,19 @@ unsigned char mode_selection_main(char* (*info)[MENU]) {
             switch (ch) {
             case 72://위
                 if (n > 1) { n--; y -= 2; }
-                else { n = 1; }
+                else { n = 1; continue; }
                 break;
             case 80://아래
                 if (n < MENU) { n++; y += 2; }
-                else { n = MENU; }
+                else { n = MENU; continue; }
+                break;
+            default:
+                continue;
             }
-        default:;
+            break;
+        default:
+            continue;
         }
-        
+        print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
     }
 }
