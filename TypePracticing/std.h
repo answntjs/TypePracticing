@@ -10,7 +10,7 @@
 
 #define WINDOWS_WIDTH 96
 #define WINDOWS_HEIGHT 32
-#define SENTENCE_PRAC_NUM 10
+
 #define WORD_PRAC_NUM 30
 
 //txt 데이터를 저장할 struct. reference=원본 txt파일명, arr=텍스트 내용 저장공간, length=배열 길이
