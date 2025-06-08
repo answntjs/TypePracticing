@@ -1,13 +1,13 @@
 #include "std.h"
-#define SENTENCE_PRAC_NUM 10
+#define WORD_PRAC_NUM 20
 
-void sentence_prac(Text* sentences) {
+void word_prac(Text* words) {
 	gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8);
-	printf("짧은글쓰기");
+	printf("단어연습");
 	
-	auto int index[SENTENCE_PRAC_NUM + 1];
-	get_random_int_arr(&index, SENTENCE_PRAC_NUM, sentences->length - 1, 0);
-	index[SENTENCE_PRAC_NUM] = -1;
+	auto int index[WORD_PRAC_NUM + 1];
+	get_random_int_arr(&index, WORD_PRAC_NUM, words->length - 1, 0);
+	index[WORD_PRAC_NUM] = -1;
 
 	int num; num = 0;
 	char buffer[WINDOWS_WIDTH + 1] = {NULL};
@@ -16,11 +16,10 @@ void sentence_prac(Text* sentences) {
 
 	Status Stat = { 0, 0, 0, 0, 0, 0, 1};
 	
-	
 	time_t start_time;
 	time_t now;
 	start_time = time(NULL);
-	for(num=0;num<SENTENCE_PRAC_NUM;num++){
+	for(num=0;num<WORD_PRAC_NUM;num++){
 		//화면 지우기
 		print_in_rectangle(0, WINDOWS_HEIGHT / 8 + 4, WINDOWS_WIDTH, 13, "");
 
@@ -28,50 +27,38 @@ void sentence_prac(Text* sentences) {
 		for (int i = 0; i < 5; i++) {
 			gotoxy(0, WINDOWS_HEIGHT / 8 + 4 + 3 * i);
 			if (index[num + i] == -1) break;
-			printf("%s", sentences->arr[index[num+i]]);
+			printf("%s", words->arr[index[num + i]]);
 		}
 
+		gotoxy(0, WINDOWS_HEIGHT / 8 + 5);
+		
 		//버퍼 초기화
 		strcpy(buffer, "");
 		ch1 = 0;
-		while (ch1 != 13) {
+		while (ch1 != 13 && ch1 != ' ') {
 			now = time(NULL);
 			if (now == start_time)now++;
 
-			drawUI_game(&Stat, num, SENTENCE_PRAC_NUM);
+			drawUI_game(&Stat, num, WORD_PRAC_NUM);
 
 			gotoxy(position, WINDOWS_HEIGHT / 8 + 5);
 			ch1 = _getch();
-			//좌우 화살표로 이동하는건 일단 보류;;;; 머리아프고 일단 구현이 급합
-			if (ch1 == 0 || ch1 == 224) {//function keys
-				/*ch2 = _getch();
-				if (ch1 == 224 && ch2 == 75) {
-					if (position <= 0) position = 0;
-					else position--;
-				}
-				else if (ch1 == 224 && ch2 == 77) {
-					if (position >= WINDOWS_WIDTH) position = WINDOWS_WIDTH;
-					else position++;
-				}*/
+			if (ch1 == 0 || ch1 == 224) {
 				ch1 = _getch();
 
 			}
 			else if (ch1 == '\b') {//backspace
-				//memmove(buffer + position, buffer + position + 1, WINDOWS_WIDTH - position + 1);
 				position = (position > 0) ? --position : 0;
 				buffer[position] = NULL;
 				printf("\b \b");
 			}
-			else if (ch1 == 13)position = 0;//enter
+			else if (ch1 == 13 || ch1 == ' ')position = 0;//enter
 			else if (ch1 == 27) break;//esc
 			else if (ch1 == '\t');//tab
 			else {
-				//memmove(buffer + position + 1, buffer + position, WINDOWS_WIDTH - position);
-				//buffer[WINDOWS_WIDTH] = NULL;
 				buffer[position] = ch1;
 				printf("%c", ch1);
-				//if (!strncmp(buffer+position, sentences->arr[index[num]]+position, 1))Stat.correct++;
-				if (buffer[position] == sentences->arr[index[num]][position]) Stat.correct++;
+				if (buffer[position] == words->arr[index[num]][position]) Stat.correct++;
 				else {
 					Stat.incorrect++;
 					Beep(255, 1);

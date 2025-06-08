@@ -1,6 +1,6 @@
 #include "std.h"
 
-#define KEY_PRACTICE_LENGTH 20
+#define KEY_PRACTICE_LENGTH 30
 
 void key_prac(void) {
     Status Stat = { 0, 0, 0, 0, 0, 0, 1 };

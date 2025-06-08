@@ -136,6 +136,7 @@
     <ClCompile Include="play.c" />
     <ClCompile Include="sentence_prac.c" />
     <ClCompile Include="txt_read_checker.c" />
+    <ClCompile Include="word_prac.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="std.h" />

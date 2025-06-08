@@ -60,6 +60,9 @@ void print_in_rectangle(short, short, short, short, char*);
 //자리연습
 void key_prac(void);
 
+//단어연습
+void word_prac(Text*);
+
 //짧은글쓰기
 void sentence_prac(Text*);
 
@@ -67,7 +70,7 @@ void sentence_prac(Text*);
 void play_game(Text*, int);
 
 //정수 배열 arr의 element를 size 수만큼 난수로 채우는 함수
-void get_random_int_arr(int** arr, int size, int max, int min);
+void get_random_int_arr(int**, int, int, int);
 
 //게임 기본 UI
 void drawUI_game(Status*, int, int);

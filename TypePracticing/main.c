@@ -83,7 +83,7 @@ int main(void) {
         free(sentences.arr);
         return 1;
     }
-    txt_to_arr(&words, &fp);
+    txt_to_arr(&words, &fp);//한계점; 사용자가 words파일에 문장을 집어넣으면 구분을 못함
     fclose(fp);
 
     fp = fopen(sentences.reference, "r");
@@ -104,7 +104,7 @@ int main(void) {
     };
     char* menu_info[MENU] = {
         "글자판의 위치를 익히는 곳입니다.\n\n숫자, 알파벳, 특수문자 등\n여러 문자들의 위치를 알 수 있습니다.",
-        "낱말을 입력하며 글쓰기를 연습합니다.\n\n낱말을 입력하고 Enter 혹은 Space Bar\n글쇠를 눌러 다음 낱말을 입력합니다.",
+        "단어를 입력하며 글쓰기를 연습합니다.\n\n낱말을 입력하고 Enter 혹은 Space Bar\n글쇠를 눌러 다음 낱말을 입력합니다.",
         "짧은 글 10문으로 글쓰기를 연습합니다.\n\n빠르게 입력하는 것도 중요하지만,\n정확하게 입력하는 것이 더욱 중요합니다.",
         "게임을 통해 타자를 연습할 수 있습니다.",
         "설정은 제작중.\n\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
@@ -128,6 +128,8 @@ int main(void) {
             mode = 0;
             break;
         case 2:
+            system("cls");
+            word_prac(&words);
             mode = 0;
             break;
         case 3:
@@ -184,7 +186,7 @@ void drawUI_main(char*(* menu)[MENU]) {
 
     printf("\n");y = WINDOWS_HEIGHT;
     gotoxy(0, y);
-    printf("v 0.3.4");
+    printf("v 0.4.1");
 }
 
 unsigned char mode_selection_main(char* (*info)[MENU]) {

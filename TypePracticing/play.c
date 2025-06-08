@@ -11,9 +11,8 @@
 } ;
 
  int select_difficulty(char** menu, char** info) {
-     
-
      int selected = 0;
+     int ch;
      while (1) {
 
          gotoxy(WINDOWS_WIDTH / 2 - 3, WINDOWS_HEIGHT / 4);
@@ -30,7 +29,7 @@
              }
          }
 
-         int ch = _getch();
+         ch = _getch();
          if (ch == 224) {
              ch = _getch();
              if (ch == 72 && selected > 0) selected--;  // ↑
@@ -40,7 +39,7 @@
              return selected;  // Enter 선택
          }
          else if (ch == 27) {
-             return -2;
+             return -2; //esc
          }
      }
  }
@@ -80,8 +79,8 @@ void time_ui(double limit_time, ULONGLONG t) {
 }
 
 int random_word(Text* words, int* wordlen, int num, int min, int max) {
-    int a[1024];// 오버플로우 방지
-    int count = 0;
+    int* a = (int*)malloc(sizeof(int) * words->length);
+    int count = 0, r;
     short ran = rand() % 3;
 
     for (int i = 0; i <= rand() % 2; i++)
@@ -112,7 +111,9 @@ int random_word(Text* words, int* wordlen, int num, int min, int max) {
         printf("no word %d", num);
         exit(1);
     }
-    return a[rand() % count];
+    r = a[rand() % count];
+    free(a);
+    return r;
 }
 
 void play_game(Text* words, int di) {
@@ -141,9 +142,8 @@ void play_game(Text* words, int di) {
     {
         difficulty = select_difficulty(dif_name, dif_info);
     }
-    else if (difficulty == -2) return;
     else if (difficulty < 0||difficulty>4) difficulty = 4;//오버플로방지, 근데 넘길수나 있음?ㅋㅋ
-
+    if (difficulty == -2) return;
     plusTime = 3 - difficulty;
     tasu = difficulty * 30 + 60;
 

@@ -33,6 +33,12 @@
     <ClCompile Include="key_prac.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="play.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="word_prac.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="std.h">
