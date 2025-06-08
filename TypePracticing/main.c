@@ -137,7 +137,7 @@ int main(void) {
             break;
         case 4:
             system("cls");
-            play_game(&words);
+            play_game(&words,-1);
             mode = 0;
             break;
         case 5:
@@ -184,7 +184,7 @@ void drawUI_main(char*(* menu)[MENU]) {
 
     printf("\n");y = WINDOWS_HEIGHT;
     gotoxy(0, y);
-    printf("v 0.0.1");
+    printf("v 0.3.4");
 }
 
 unsigned char mode_selection_main(char* (*info)[MENU]) {
@@ -194,6 +194,7 @@ unsigned char mode_selection_main(char* (*info)[MENU]) {
     unsigned char n = 1;
     unsigned char ch = 1;
     print_in_rectangle(x + 21, WINDOWS_HEIGHT / 7 + 5, 40, 13, (*info)[n - 1]);
+    printf("d");
     while (ch != '\n' && ch != ' ') {
         gotoxy(x, y);
         ch = getch();

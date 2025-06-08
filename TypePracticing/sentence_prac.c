@@ -38,11 +38,7 @@ void sentence_prac(Text* sentences) {
 			now = time(NULL);
 			if (now == start_time)now++;
 
-			//UI 갱신
-			gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 1);
-			printf("%-8s%2d/%-20d%-11s%4.0f/%-9s %-8s%3.0f/100", "진행도:", (num + 1), SENTENCE_PRAC_NUM, "분당 타수:", Stat.type_speed, "분", "정확도:", Stat.accuracy);
-			gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 2);
-			bar(30, num, SENTENCE_PRAC_NUM); printf(" "); bar(25, Stat.type_speed, Stat.type_peak); printf(" "); bar(20, Stat.accuracy, 100);
+			drawUI_game(&Stat, num, SENTENCE_PRAC_NUM);
 
 			gotoxy(position, WINDOWS_HEIGHT / 8 + 5);
 			ch1 = _getch();
@@ -94,15 +90,5 @@ void sentence_prac(Text* sentences) {
 		if (ch1 == 27) break;
 	}
 
-	gotoxy(WINDOWS_WIDTH / 2 - 2, WINDOWS_HEIGHT / 2);
-	printf("결과");
-	gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 2);
-	printf("분당 타수:    %8.3lf", Stat.type_speed);
-	gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 3);
-	printf("최고 타수:    %8.3lf", Stat.type_peak);
-	gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 4);
-	printf("정확도:       %8.3lf", Stat.accuracy);
-	gotoxy(WINDOWS_WIDTH / 2 - 13, WINDOWS_HEIGHT / 2 + 6);
-	printf("Press any key to continue.");
-	_getch();
+	print_result(&Stat);
 }

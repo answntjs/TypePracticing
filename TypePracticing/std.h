@@ -17,7 +17,7 @@
 typedef struct text {
     char* reference;//text 출처
     char** arr;//파일에서 읽어온 데이터 저장
-    int length;//arr의 길이
+    unsigned int length;//arr의 길이
 }Text;
 
 typedef struct status {
@@ -64,8 +64,14 @@ void key_prac(void);
 void sentence_prac(Text*);
 
 //놀이
-void play_game(Text*);
+void play_game(Text*, int);
 
 //정수 배열 arr의 element를 size 수만큼 난수로 채우는 함수
 void get_random_int_arr(int** arr, int size, int max, int min);
+
+//게임 기본 UI
+void drawUI_game(Status*, int, int);
+
+//게임의 결과 표시
+void print_result(Status*);
 

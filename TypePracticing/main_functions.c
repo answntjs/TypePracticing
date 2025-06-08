@@ -31,9 +31,9 @@ void DisableConsoleResize() {
     SetWindowLong(hwnd, GWL_STYLE, style);
 }
 
-void bar(int length, double numerator, double denominator) {
+void bar(int length, double progresserator, double denominator) {
     int i;
-    for (i = 0; i < length * numerator / denominator; i++) printf("#");
+    for (i = 0; i < length * progresserator / denominator; i++) printf("#");
     for (i; i < length; i++) printf("-");
 }
 
@@ -96,4 +96,26 @@ void get_random_int_arr(int(*arr)[], int size, int max, int min) {
     for (int i = 0; i < size; i++) {
         (*arr)[i] = rand() % (max - min + 1) + min;
     }
+}
+
+void drawUI_game(Status * Stat, int progress, int goal) {
+    gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 1);
+    printf("%-8s%2d/%-20d%-11s%4.0f/%-9s %-8s%3.0f/100", "진행도:", (progress + 1), goal, "분당 타수:", Stat->type_speed, "분", "정확도:", Stat->accuracy);
+    gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 2);
+    bar(30, progress, goal); printf(" "); bar(25, Stat->type_speed, Stat->type_peak); printf(" "); bar(20, Stat->accuracy, 100);
+}
+
+void print_result(Status* Stat) {
+    system("cls");
+    gotoxy(WINDOWS_WIDTH / 2 - 2, WINDOWS_HEIGHT / 2);
+    printf("결과");
+    gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 2);
+    printf("분당 타수:    %8.3lf", Stat->type_speed);
+    gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 3);
+    printf("최고 타수:    %8.3lf", Stat->type_peak);
+    gotoxy(WINDOWS_WIDTH / 2 - 11, WINDOWS_HEIGHT / 2 + 4);
+    printf("정확도:       %8.3lf", Stat->accuracy);
+    gotoxy(WINDOWS_WIDTH / 2 - 13, WINDOWS_HEIGHT / 2 + 6);
+    printf("Press any key to continue.");
+    _getch();
 }
