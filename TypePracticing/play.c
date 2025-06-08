@@ -81,7 +81,7 @@ void time_ui(double limit_time, ULONGLONG t) {
 int random_word(Text* words, int* wordlen, int num, int min, int max) {
     int* a = (int*)malloc(sizeof(int) * words->length);
     int count = 0, r;
-    short ran = rand() % 3;
+    unsigned char ran = rand() % 3;
 
     for (int i = 0; i <= rand() % 2; i++)
     {
@@ -116,7 +116,7 @@ int random_word(Text* words, int* wordlen, int num, int min, int max) {
     return r;
 }
 
-void play_game(Text* words, int di) {
+void play_game(Text* words, int di, int score) {
     gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8);
     printf("놀이");
 
@@ -289,13 +289,13 @@ void play_game(Text* words, int di) {
         printf("클리어! 다음 레벨로");
         _getch();
         free(wordlength);
-        play_game(words,difficulty + 1);
+        play_game(words,difficulty + 1, score);
         return;
     }
     else
     {
         gotoxy(WINDOWS_WIDTH / 2 - 8, WINDOWS_HEIGHT / 2);
-        printf("실패! 메인 메뉴로");
+        printf("실패! 스코어: %d",score);
         _getch();
         free(wordlength);
         return;

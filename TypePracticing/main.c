@@ -139,7 +139,7 @@ int main(void) {
             break;
         case 4:
             system("cls");
-            play_game(&words,-1);
+            play_game(&words,-1,0);
             mode = 0;
             break;
         case 5:

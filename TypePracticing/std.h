@@ -67,7 +67,7 @@ void word_prac(Text*);
 void sentence_prac(Text*);
 
 //놀이
-void play_game(Text*, int);
+void play_game(Text*, int, int);
 
 //정수 배열 arr의 element를 size 수만큼 난수로 채우는 함수
 void get_random_int_arr(int**, int, int, int);
