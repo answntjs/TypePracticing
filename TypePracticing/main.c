@@ -19,7 +19,7 @@
 
 #include "std.h"
 
-#define MENU 7//메뉴의 수. 마지막 번호는 무조건 종료
+#define MENU 6//메뉴의 수. 마지막 번호는 무조건 종료
 
 //커서를 움직여 모드를 선택하는 함수. 모드 숫자를 반환함.
 unsigned char mode_selection_main(char*(*info)[MENU]);
@@ -100,15 +100,15 @@ int main(void) {
     unsigned char mode =0;
 
     char* menu[MENU] = {
-        "1. 자리연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", "5. 설정", "6. 크레딧", "7. 종료"
+        "1. 자리연습", "2. 낱말연습", "3. 짧은글연습", "4. 놀이", /*"5. 설정",*/ "5. 크레딧", "6. 종료"
     };
     char* menu_info[MENU] = {
         "글자판의 위치를 익히는 곳입니다.\n\n숫자, 알파벳, 특수문자 등\n여러 문자들의 위치를 알 수 있습니다.",
         "단어를 입력하며 글쓰기를 연습합니다.\n\n낱말을 입력하고 Enter 혹은 Space Bar\n글쇠를 눌러 다음 낱말을 입력합니다.",
         "짧은 글 10문으로 글쓰기를 연습합니다.\n\n빠르게 입력하는 것도 중요하지만,\n정확하게 입력하는 것이 더욱 중요합니다.",
         "게임을 통해 타자를 연습할 수 있습니다.",
-        "설정은 제작중.\n\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
-        "Motivated by Hancom\n\nDeveloped in Konkuk University",
+       // "설정은 제작중.\n\n유저 데이터 혹은 타자 데이터 통계,\n게임 설정 등 만들수도 있고 안만들 수도 있고",
+        "Motivated by Hancom\nDeveloped in Konkuk University\n\n202510970 Jooseon Moon*\n202510949 Seojin Kim-\n202510566 Junseok Kim\n202510964 Taehyun Kim",
         "TypePracticing을 끝냅니다.",
     };
 
@@ -145,8 +145,8 @@ int main(void) {
         case 5:
             mode = 0;
             break;
-        case 6:mode = 0; break;
-        case 7:
+        //case 6:mode = 0; break;
+        case MENU:
             break;
         case 98:
             //텍스트 읽기 테스트
@@ -159,7 +159,7 @@ int main(void) {
         default:
             printf("메뉴를 불러오는 데 실패하였습니다! 게임을 종료합니다.\n\n");
             system("pause");
-            mode = 7;
+            mode = MENU;
             break;
         }
         
@@ -186,7 +186,7 @@ void drawUI_main(char*(* menu)[MENU]) {
 
     printf("\n");y = WINDOWS_HEIGHT;
     gotoxy(0, y);
-    printf("v 0.4.1");
+    printf("v 1.0.0");
 }
 
 unsigned char mode_selection_main(char* (*info)[MENU]) {
