@@ -253,6 +253,7 @@ void play_game(Text* words, int di, int score) {
         if (!strcmp(writtenWord,game.p_target_word))//맞으면 0
         {
             game.correct[game.round] = 'O';//정답;
+            score++;
         }
         else
         {
