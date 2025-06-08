@@ -10,13 +10,8 @@
     char correct[ROUND];
 } ;
 
- int select_difficulty() {
-     char* menu[] = { "1. 쉬움", "2. 보통", "3. 어려움" };
-     char* info[] = {
-         "쉬움.",
-         "적당한 난이도입니다.",
-         "어려움."
-     };
+ int select_difficulty(char** menu, char** info) {
+     
 
      int selected = 0;
      while (1) {
@@ -27,11 +22,11 @@
          for (int i = 0; i < 3; i++) {
              gotoxy(WINDOWS_WIDTH / 2 - 28, WINDOWS_HEIGHT / 3 + 2 + i * 2);
              if (i == selected) {
-                 printf("> %s", menu[i]);
-                 print_in_rectangle(WINDOWS_WIDTH / 2 + 10, WINDOWS_HEIGHT / 3 + 2, 40, 3, info[i]);
+                 printf(">%s", menu[i]);
+                 print_in_rectangle(WINDOWS_WIDTH / 2 -3, WINDOWS_HEIGHT / 3 + 2, 40, 5, info[i]);
              }
              else {
-                 printf("  %s", menu[i]);
+                 printf(" %s", menu[i]);
              }
          }
 
@@ -45,31 +40,43 @@
              return selected;  // Enter 선택
          }
          else if (ch == 27) {
-             return -1;
+             return -2;
          }
      }
  }
 
-void make_ui(struct GameState* game, char* dif) {
-    gotoxy(WINDOWS_WIDTH / 2 - strlen(game->correct)/2 -1, WINDOWS_HEIGHT / 3 + 1);
-    printf("%s", game->correct);
-    gotoxy(WINDOWS_WIDTH / 2 - 14, WINDOWS_HEIGHT / 3 + 2);
-    printf("난이도:%s   라운드 %d/%d \n%s", dif,game->round + 1, ROUND,game->p_target_word);
-    gotoxy(0, WINDOWS_HEIGHT / 3 + 4);
+void make_ui(struct GameState* game, int dif, char** dif_name) {
+    
+    gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 1);
+    printf("%-8s%-10s %-8s%1d/%1d", "난이도:", dif_name[dif], "라운드:", game->round + 1, ROUND);
+    gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8 + 2);
+    bar(32, game->round, ROUND);
+
+    gotoxy(WINDOWS_WIDTH / 2 - strlen(game->correct)/2 -1, WINDOWS_HEIGHT / 4 + 1);
+    printf("%s", game->correct);//라운드별 정답여부
+    
+    print_in_rectangle(0, WINDOWS_HEIGHT / 2 - 1, WINDOWS_WIDTH, 1, " ");
+    gotoxy(WINDOWS_WIDTH / 2 - strlen(game->p_target_word) / 2 - 1, WINDOWS_HEIGHT / 2-1);
+    printf("%s",game->p_target_word);
+    
+    print_in_rectangle(0, WINDOWS_HEIGHT / 2, WINDOWS_WIDTH, 1, " ");
+    gotoxy(WINDOWS_WIDTH / 2 - strlen(game->p_target_word) / 2 - 1, WINDOWS_HEIGHT / 2);
     for (int i = 0; i < strlen(game->p_target_word); i++) {
 
         printf("="); 
     }
     printf(">");
-    gotoxy(game->max_length + 1, WINDOWS_HEIGHT / 3 + 4);
+    gotoxy(WINDOWS_WIDTH / 2 - strlen(game->p_target_word) / 2 - 1 + game->max_length + 1, WINDOWS_HEIGHT / 2);
     printf(">");
 
 }
 
 void time_ui(double limit_time, ULONGLONG t) {
 
-    gotoxy(WINDOWS_WIDTH / 2 - 5, WINDOWS_HEIGHT / 3);
-    printf("시간 %.2lf/%.2lf  ", limit_time - (double)t / 1000, limit_time);
+    gotoxy(WINDOWS_WIDTH / 2 - 8, WINDOWS_HEIGHT / 4 - 1);
+    printf("시간 %5.2lf/%5.2lf", limit_time - (double)t / 1000, limit_time);
+    gotoxy(WINDOWS_WIDTH / 2 - 8, WINDOWS_HEIGHT / 4);
+    bar(16, limit_time - (double)t / 1000, limit_time);
 }
 
 int random_word(Text* words, int* wordlen, int num, int min, int max) {
@@ -108,28 +115,43 @@ int random_word(Text* words, int* wordlen, int num, int min, int max) {
     return a[rand() % count];
 }
 
-void play_game(Text* words,int di) {
+void play_game(Text* words, int di) {
     gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8);
-	printf("짧은글쓰기");
+    printf("놀이");
 
-    int difficulty = di;
-    if (difficulty == -1)
-    {
-        difficulty = select_difficulty();
-    }
-    if (difficulty == -1) return;
-
-    char* dif[3];
     double tasu, plusTime; //난이도 설정에 따른 보정치
     struct GameState game;
     game.round = 0;  // 초기 라운드 설정
     game.p_target_word = NULL;  // 초기 목표 단어 설정
     game.current_pos = 0;  // 초기 입력 위치 설정
     game.max_length = 0;  // 초기 최대 단어 길이 설정
-    strcpy(game.correct,"    ");//초기화
+    strcpy(game.correct, "    ");//초기화
+
+    char* dif_name[5] = { "0. 허접", "1. 초보", "2. 중급", "3. 고급", "4. 챌린지" };
+    char* dif_info[5] = {
+        "타자가 인생 처음이면 도전해보세요.\n\n하다가 졸릴 수 있습니다.",
+        "아직 미숙한 사용자에게 적당합니다.\n\n사실 난이도 조절 없이\n막 던져본 말입니다.",
+        "꽤 도전적인 난이도입니다.\n\n물론 테스트해본 적은 없습니다.",
+        "쇼츠로 올릴 법한 난이도입니다.\n아님 말고",
+        "이거 깨면 ㅇㅈ"
+    };
+    
+    int difficulty = di;
+    if (difficulty == -1)
+    {
+        difficulty = select_difficulty(dif_name, dif_info);
+    }
+    else if (difficulty == -2) return;
+    else if (difficulty < 0||difficulty>4) difficulty = 4;//오버플로방지, 근데 넘길수나 있음?ㅋㅋ
+
+    plusTime = 3 - difficulty;
+    tasu = difficulty * 30 + 60;
+
+    
 
     int* wordlength;
     wordlength = (int*)malloc(sizeof(int) * words->length);
+    if (!wordlength) exit(1);
     int max_len = 0, min_len = WINDOWS_WIDTH;
     for (int i = 0; i < words->length; i++)
     {
@@ -139,10 +161,9 @@ void play_game(Text* words,int di) {
     }
 
     int result[ROUND];
-
     for (int i = 0; i < ROUND; i++)
     {
-        switch (difficulty)
+        /*switch (difficulty)
         {
         case 0:  // 쉬움
             //printf("%d,", (max_len * i + (4 - i) * min_len) / 4);// 첫 번째 단어 선택
@@ -165,11 +186,16 @@ void play_game(Text* words,int di) {
             break;
         default:
             break;
-        }
+        }*/
+
+        result[i] = random_word(words, wordlength, (int)(max_len * i + (ROUND - 1 - i) * min_len) / (ROUND - 1), min_len, max_len);
     }
+    
 	game.max_length = strlen(words->arr[result[ROUND - 1]]);
-    printf("%s", game.p_target_word);
+
     system("cls");
+    gotoxy(WINDOWS_WIDTH / 16, WINDOWS_HEIGHT / 8);
+    printf("놀이");
 
     while (1) {
         ULONGLONG start_time = GetTickCount64();
@@ -180,9 +206,12 @@ void play_game(Text* words,int di) {
         game.limit_time = plusTime / (game.round+1) + strlen(game.p_target_word) / (tasu / 60);
         int ch = 0;
         char* writtenWord = (char*)calloc(strlen(game.p_target_word) + 1,sizeof(char));
-        make_ui(&game, dif);
+
+        make_ui(&game, difficulty, dif_name);
         ULONGLONG time_gap = 0;
         time_ui(game.limit_time, time_gap);
+
+        game.current_pos = 0;
         while (ch != 13) {
             if (game.limit_time*1000 - time_gap <= 0) break;
             if (!_kbhit())
@@ -196,7 +225,7 @@ void play_game(Text* words,int di) {
                 continue;
             }
 
-            gotoxy(game.current_pos, WINDOWS_HEIGHT / 3 + 4);
+            gotoxy(WINDOWS_WIDTH / 2 - strlen(game.p_target_word) / 2 - 1 + game.current_pos, WINDOWS_HEIGHT / 2);
             ch = _getch();
 
             if (ch == '\b') {//backspace
@@ -250,10 +279,14 @@ void play_game(Text* words,int di) {
             co++;
         }
     }
+    
     system("cls");
-    if (co == -1 && difficulty != 2)
+    gotoxy(WINDOWS_WIDTH / 2 - 6, WINDOWS_HEIGHT / 2-1);
+    printf("%d 난이도 결과",difficulty);
+    if (co == -1)
     {
-        printf("과반수 이상 맞춰서 다음레벨로");
+        gotoxy(WINDOWS_WIDTH / 2 - 10, WINDOWS_HEIGHT / 2);
+        printf("클리어! 다음 레벨로");
         _getch();
         free(wordlength);
         play_game(words,difficulty + 1);
@@ -261,7 +294,8 @@ void play_game(Text* words,int di) {
     }
     else
     {
-        printf("연습하세요!");
+        gotoxy(WINDOWS_WIDTH / 2 - 8, WINDOWS_HEIGHT / 2);
+        printf("실패! 메인 메뉴로");
         _getch();
         free(wordlength);
         return;

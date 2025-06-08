@@ -31,9 +31,9 @@ void DisableConsoleResize() {
     SetWindowLong(hwnd, GWL_STYLE, style);
 }
 
-void bar(int length, double progresserator, double denominator) {
+void bar(int length, double numerator, double denominator) {
     int i;
-    for (i = 0; i < length * progresserator / denominator; i++) printf("#");
+    for (i = 0; i < length * numerator / denominator; i++) printf("#");
     for (i; i < length; i++) printf("-");
 }
 
